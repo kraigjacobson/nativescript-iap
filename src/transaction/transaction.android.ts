@@ -26,7 +26,12 @@ export class Transaction extends TransactionBase {
                     break;
             }
         }
-
-        this.productId = nativeValue.getSku();
+        
+        if (nativeValue.getSku) {
+            this.productId = nativeValue.getSku()
+        } else if (nativeValue.getOriginalJson) {
+            const json = nativeValue.getOriginalJson()
+            this.productId = JSON.parse(json).productId
+        }
     }
 } 
